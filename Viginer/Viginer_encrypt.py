@@ -1,14 +1,28 @@
-def viginer_encrypt(text,alphabet):
-    result_text=[]
-    index_last_symbol=0
+def encrypt(text, alphabet):
+    """
+        Шифрует текст методом Виженера с самоключом
+        Для первой буквы используется 'а' как предыдущая
+        """
+    if not text:
+        return ""
 
-    for number_symbol,symbol in enumerate(text):
-        index_text_symbol=alphabet.index(symbol)
-        chifer_index_symbol=(index_text_symbol +index_last_symbol) %len(alphabet)
-        result_text.append(alphabet[chifer_index_symbol])
-        index_last_symbol=index_text_symbol
-    print(result_text)
+    result = []
 
-# # Проверка
-# alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-# text = "HELLO"
+    # Обрабатываем первую букву - используем 'а' как предыдущую
+    first_char = text[0]
+    char_index = alphabet.index(first_char)
+    key_index = alphabet.index('а')  # по условию для первой буквы
+    encrypted_index = (char_index + key_index) % len(alphabet)
+    result.append(alphabet[encrypted_index])
+
+    # Обрабатываем остальные буквы
+    for i in range(1, len(text)):
+        current_char = text[i]
+        previous_char = text[i - 1]  # предыдущая буква исходного текста
+
+        char_index = alphabet.index(current_char)
+        key_index = alphabet.index(previous_char)
+        encrypted_index = (char_index + key_index) % len(alphabet)
+        result.append(alphabet[encrypted_index])
+
+    return ''.join(result)
