@@ -4,20 +4,21 @@
 # реализовать атаку полного перебора (brute force attack).
 from Viginer.Viginer_encrypt import encrypt
 from Viginer.brute import brute
+from Viginer.read import read_file
 from Viginer.viginer_decrypt import decrypt
+from Viginer.write import write_file
 
 
 def main():
     alphabet = "абвгдежзийклмнопрстуфхцчшщъыьэюя"
-    test_text = "приветмир"
-    print(f"Исходный текст: {test_text}")
+    test_text = read_file('исходныйтекст.txt')
 
     encrypted = encrypt(test_text, alphabet)
-    print(f"Зашифрованный:  {encrypted}")
+    write_file('зашифрованныйтекст.txt',encrypted)
 
     decrypted = decrypt(encrypted, alphabet)
-    print(f"Расшифрованный: {decrypted}")
-    input('brute--')
+    write_file('расшифрованныйтекст.txt',decrypted)
+
     brute(encrypted ,alphabet)
 
 

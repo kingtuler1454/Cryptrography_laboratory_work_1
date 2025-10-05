@@ -1,29 +1,35 @@
-def decrypt(encrypted_text, alphabet,key_candidate=False):
+def decrypt(ciphertext, alphabet, first_char_candidate=False):
     """
     Дешифрует текст, зашифрованный методом Виженера с самоключом
+    Неалфавитные символы остаются без изменений
     """
-    if not encrypted_text:
+    if not ciphertext:
         return ""
 
-    result = []
+    decoded_chars = []
 
-    # Первая буква - используем 'а' как ключ
-    first_encrypted =key_candidate if key_candidate else encrypted_text[0]
-    encrypted_index = alphabet.index(first_encrypted)
-    key_index = alphabet.index('а')
-    decrypted_index = (encrypted_index - key_index) % len(alphabet)
-    result.append(alphabet[decrypted_index])
+    # Обрабатываем первый символ
+    first_encoded_char = first_char_candidate if first_char_candidate else ciphertext[0]
 
-    # Остальные буквы
-    for i in range(1, len(encrypted_text)):
-        current_encrypted = encrypted_text[i]
-        # Используем предыдущую РАСШИФРОВАННУЮ букву как ключ
-        previous_decrypted = result[i-1]
+    if first_encoded_char in alphabet:
+        encoded_pos = alphabet.index(first_encoded_char)
+        key_pos = alphabet.index('а')
+        decoded_pos = (encoded_pos - key_pos) % len(alphabet)
+        decoded_chars.append(alphabet[decoded_pos])
+    else:
+        decoded_chars.append(first_encoded_char)
 
-        encrypted_index = alphabet.index(current_encrypted)
-        key_index = alphabet.index(previous_decrypted)
-        decrypted_index = (encrypted_index - key_index) % len(alphabet)
-        result.append(alphabet[decrypted_index])
+    # Обрабатываем последующие символы
+    for position in range(1, len(ciphertext)):
+        current_encoded_char = ciphertext[position]
+        previous_decoded_char = decoded_chars[position - 1]  # предыдущая расшифрованная буква
 
-    return ''.join(result)
+        if current_encoded_char in alphabet and previous_decoded_char in alphabet:
+            encoded_pos = alphabet.index(current_encoded_char)
+            key_pos = alphabet.index(previous_decoded_char)
+            decoded_pos = (encoded_pos - key_pos) % len(alphabet)
+            decoded_chars.append(alphabet[decoded_pos])
+        else:
+            decoded_chars.append(current_encoded_char)
 
+    return ''.join(decoded_chars)
