@@ -6,16 +6,11 @@ def brute(cipher_text, alphabet):
     Атака полным перебором для определения начального ключа
     """
 
-
     for key_candidate in alphabet:
         try:
             # Пробуем дешифровать с текущим кандидатом ключа
             decrypted = decrypt(cipher_text, alphabet, key_candidate)
-            print(f"Ключ '{key_candidate}': {decrypted[:20]}")
-
-
+            print(f"Ключ '{key_candidate}': {decrypted[:30]}")
 
         except Exception as e:
             print(e)
-
-

@@ -8,7 +8,7 @@ from Viginer.read import read_file
 from Viginer.viginer_decrypt import decrypt
 from Viginer.write import write_file
 
-
+ 
 def main():
     alphabet = "абвгдежзийклмнопрстуфхцчшщъыьэюя"
     test_text = read_file('исходныйтекст.txt')
@@ -24,5 +24,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

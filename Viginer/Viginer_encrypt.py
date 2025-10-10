@@ -2,33 +2,29 @@ def encrypt(text, alphabet):
     """
     Шифрует текст методом Виженера с самоключом
     Для первой буквы используется 'а' как предыдущая
+    Пробелы и другие символы не прерывают цепочку ключей
     """
     if not text:
         return ""
-
+ 
     result = []
+    last_plain_char = 'а'  # Начинаем с 'а' для первой буквы
 
-    # Обрабатываем первую букву - используем 'а' как предыдущую
-    first_char = text[0]
-    if first_char in alphabet:
-        char_index = alphabet.index(first_char)
-        key_index = alphabet.index('а')
-        encrypted_index = (char_index + key_index) % len(alphabet)
-        result.append(alphabet[encrypted_index])
-    else:
-        result.append(first_char)
-
-    # Обрабатываем остальные буквы
-    for i in range(1, len(text)):
+    for i in range(len(text)):
         current_char = text[i]
-        previous_char = text[i - 1]  # предыдущая буква исходного текста
-
-        if current_char in alphabet and previous_char in alphabet:
+        
+        if current_char in alphabet:
+            # Шифруем текущую букву с использованием последней буквы открытого текста
             char_index = alphabet.index(current_char)
-            key_index = alphabet.index(previous_char)
+            key_index = alphabet.index(last_plain_char)
             encrypted_index = (char_index + key_index) % len(alphabet)
-            result.append(alphabet[encrypted_index])
+            encrypted_char = alphabet[encrypted_index]
+            
+            result.append(encrypted_char)
+            last_plain_char = current_char  # Запоминаем текущую букву открытого текста для следующего шага
         else:
+            # Для не-алфавитных символов просто копируем их
             result.append(current_char)
+            # НЕ обновляем last_plain_char - продолжаем использовать предыдущую букву
 
     return ''.join(result)
